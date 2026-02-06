@@ -1,0 +1,131 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.label {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.resultOptions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.resultButton {
+  padding: 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 0.5rem;
+  background-color: var(--bg-primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.resultButton.win {
+  color: var(--success-color);
+}
+
+.resultButton.loss {
+  color: var(--danger-color);
+}
+
+.resultButton.draw {
+  color: var(--warning-color);
+}
+
+.resultButton.active {
+  border-width: 3px;
+  transform: scale(1.05);
+}
+
+.resultButton.win.active {
+  border-color: var(--success-color);
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.resultButton.loss.active {
+  border-color: var(--danger-color);
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.resultButton.draw.active {
+  border-color: var(--warning-color);
+  background-color: rgba(245, 158, 11, 0.1);
+}
+
+.riskOptions {
+  display: flex;
+  gap: 1rem;
+}
+
+.riskButton {
+  flex: 1;
+  padding: 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 0.5rem;
+  background-color: var(--bg-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.riskButton:hover {
+  border-color: var(--primary-color);
+}
+
+.riskButton.active {
+  border-color: var(--primary-color);
+  background-color: rgba(37, 99, 235, 0.1);
+  color: var(--primary-color);
+}
+
+.predefinedComments {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.commentButton {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  background-color: var(--bg-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.commentButton:hover {
+  background-color: var(--bg-secondary);
+}
+
+.commentButton.active {
+  border-color: var(--primary-color);
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+.customButton {
+  padding: 0.75rem;
+  border: 1px dashed var(--border-color);
+  border-radius: 0.5rem;
+  background-color: transparent;
+  color: var(--primary-color);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.customButton:hover {
+  background-color: rgba(37, 99, 235, 0.05);
+}

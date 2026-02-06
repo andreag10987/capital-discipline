@@ -1,0 +1,93 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1rem;
+  background: #f7fafc;
+  border-radius: 8px;
+  gap: 1rem;
+}
+
+.label {
+  font-weight: 600;
+  color: #4a5568;
+  min-width: 140px;
+}
+
+.value {
+  flex: 1;
+  color: #2d3748;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+.adminBadge {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-left: 0.5rem;
+}
+
+.verified {
+  color: #38a169;
+  font-weight: 600;
+}
+
+.unverified {
+  color: #e53e3e;
+  font-weight: 600;
+}
+
+.active {
+  color: #38a169;
+  font-weight: 600;
+}
+
+.blocked {
+  color: #e53e3e;
+  font-weight: 600;
+}
+
+.blockReason {
+  background: #fed7d7;
+  color: #742a2a;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.blockDate {
+  font-size: 0.85rem;
+  color: #718096;
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .value {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .label {
+    min-width: auto;
+  }
+}

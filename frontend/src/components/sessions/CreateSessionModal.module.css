@@ -1,0 +1,44 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.label {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.riskOptions {
+  display: flex;
+  gap: 1rem;
+}
+
+.riskButton {
+  flex: 1;
+  padding: 1.5rem;
+  border: 2px solid var(--border-color);
+  border-radius: 0.75rem;
+  background-color: var(--bg-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text-primary);
+}
+
+.riskButton:hover {
+  border-color: var(--primary-color);
+}
+
+.riskButton.active {
+  border-color: var(--primary-color);
+  background-color: rgba(37, 99, 235, 0.1);
+  color: var(--primary-color);
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}

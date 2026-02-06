@@ -1,0 +1,227 @@
+.container {
+  width: 100%;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #999;
+}
+
+/* Filtros */
+.filterRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.filterLabel {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.filterButtons {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.filterBtn {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #555;
+  transition: all 0.2s;
+}
+
+.filterBtn:hover {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.filterBtnActive {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+/* Resumen */
+.summaryRow {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.summaryItem {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 0.7rem;
+  text-align: center;
+}
+
+.summaryLabel {
+  display: block;
+  font-size: 0.72rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 0.2rem;
+}
+
+.summaryValue {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.green { color: #28a745; }
+.red { color: #dc3545; }
+
+/* Lista de dias */
+.daysList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.daysList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.daysList::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 2rem;
+  color: #999;
+}
+
+/* Day card */
+.dayCard {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.dayCard:hover {
+  border-color: #667eea44;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.12);
+}
+
+.dayCardSelected {
+  border-color: #667eea;
+}
+
+.dayHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+}
+
+.dayLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.statusDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dayDate {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.dayRight {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dayPnl {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.dayStatus {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.statusPLANNED { background: #eee; color: #666; }
+.statusIN_PROGRESS { background: #e8eaff; color: #667eea; }
+.statusCOMPLETED { background: #d4edda; color: #155724; }
+.statusBLOCKED { background: #f8d7da; color: #721c24; }
+
+/* Day detail */
+.dayDetail {
+  border-top: 1px solid #eee;
+  padding: 1rem;
+  background: #fafafa;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+}
+
+.detailItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.detailLabel {
+  font-size: 0.72rem;
+  color: #999;
+  text-transform: uppercase;
+}
+
+.detailValue {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.blockedReason {
+  margin-top: 0.7rem;
+  background: #f8d7da;
+  color: #721c24;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.notes {
+  margin-top: 0.5rem;
+  color: #555;
+  font-size: 0.88rem;
+}
+
+@media (max-width: 600px) {
+  .summaryRow { grid-template-columns: repeat(3, 1fr); }
+  .detailGrid { grid-template-columns: repeat(2, 1fr); }
+}

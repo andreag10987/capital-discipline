@@ -1,0 +1,90 @@
+/* OAuth Buttons */
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 2rem 0 1.5rem 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e0e0e0;
+}
+
+.dividerText {
+  padding: 0 1rem;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.oauthButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.googleButton,
+.facebookButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.875rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid #ddd;
+}
+
+.googleButton {
+  background: white;
+  color: #333;
+}
+
+.googleButton:hover {
+  background: #f8f9fa;
+  border-color: #ccc;
+}
+
+.facebookButton {
+  background: #1877F2;
+  color: white;
+  border-color: #1877F2;
+}
+
+.facebookButton:hover {
+  background: #166fe5;
+}
+
+.oauthIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.legalLinks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.legalLink {
+  color: #999;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.legalLink:hover {
+  color: #667eea;
+}
+
+.separator {
+  color: #ddd;
+}

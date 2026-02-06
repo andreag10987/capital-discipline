@@ -1,0 +1,174 @@
+.tableContainer {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead {
+  background: #f7fafc;
+}
+
+.table th {
+  padding: 1rem;
+  text-align: left;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #4a5568;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.row {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.row:hover {
+  background: #f7fafc;
+}
+
+.table td {
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #2d3748;
+}
+
+/* Email Cell */
+.emailCell {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.adminBadge {
+  font-size: 1rem;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badgeFree {
+  background: #e2e8f0;
+  color: #4a5568;
+}
+
+.badgeBasic {
+  background: #bee3f8;
+  color: #2c5282;
+}
+
+.badgePro {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+/* Status */
+.statusActive {
+  color: #38a169;
+  font-weight: 600;
+}
+
+.statusBlocked {
+  color: #e53e3e;
+  font-weight: 600;
+}
+
+/* Verified */
+.verified {
+  color: #38a169;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.unverified {
+  color: #cbd5e0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* Centered cells */
+.centered {
+  text-align: center;
+}
+
+/* Abuse warnings */
+.abuseWarning {
+  background: #fed7d7;
+  color: #c53030;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.abuseNone {
+  color: #a0aec0;
+}
+
+/* Date cell */
+.dateCell {
+  color: #718096;
+  font-size: 0.9rem;
+}
+
+/* Empty state */
+.empty {
+  text-align: center;
+  padding: 4rem;
+}
+
+.emptyIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.emptyText {
+  font-size: 1.2rem;
+  color: #a0aec0;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .tableContainer {
+    overflow-x: auto;
+  }
+
+  .table {
+    min-width: 1000px;
+  }
+}
+
+@media (max-width: 768px) {
+  .table th,
+  .table td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .emailCell {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

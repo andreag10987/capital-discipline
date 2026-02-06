@@ -1,0 +1,254 @@
+.formContainer {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-size: 1.4rem;
+}
+
+.errorBanner {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.label {
+  font-weight: 600;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.currencySymbol {
+  position: absolute;
+  left: 12px;
+  color: #888;
+  font-weight: 600;
+}
+
+.input {
+  width: 100%;
+  padding: 0.7rem 0.75rem 0.7rem 2rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.inputError {
+  border-color: #dc3545;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 0.82rem;
+}
+
+.hint {
+  color: #888;
+  font-size: 0.82rem;
+}
+
+/* Radio buttons */
+.radioGroup {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.radioLabel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.radioLabel:hover {
+  border-color: #667eea;
+  background: #f0f0ff;
+}
+
+.radioActive {
+  border-color: #667eea;
+  background: linear-gradient(135deg, #667eea15, #764ba215);
+}
+
+.radioInput {
+  display: none;
+}
+
+.radioText {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+
+/* Range slider */
+.rangeInput {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, #dc3545, #ffc107, #28a745);
+  outline: none;
+}
+
+.rangeInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #667eea;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
+}
+
+.rangeLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: #999;
+  margin-top: 0.25rem;
+}
+
+/* Preview box */
+.preview {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 1.25rem;
+  border: 1px solid #eee;
+}
+
+.previewTitle {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.previewGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.previewItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.previewLabel {
+  font-size: 0.78rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.previewValue {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.positive {
+  color: #28a745;
+}
+
+.negative {
+  color: #dc3545;
+}
+
+.warningBanner {
+  margin-top: 0.9rem;
+  background: #fff3cd;
+  color: #856404;
+  padding: 0.6rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.submitButton {
+  flex: 2;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  flex: 1;
+  background: #eee;
+  color: #555;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cancelButton:hover {
+  background: #ddd;
+}
