@@ -31,7 +31,7 @@ const LoginPage = () => {
 
     try {
       const response = await login(formData.email, formData.password);
-      setAuth(response.access_token);
+      setAuth(response.access_token, response.user);
       showToast(t('auth.loginSuccess'), 'success');
       navigate('/');
     } catch (error) {
@@ -65,8 +65,9 @@ const LoginPage = () => {
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.inputGroup}>
-            <label className={styles.label}>{t('auth.email')}</label>
+            <label htmlFor="email" className={styles.label}>{t('auth.email')}</label>
             <input
+              id="email"
               type="email"
               name="email"
               value={formData.email}
@@ -78,8 +79,9 @@ const LoginPage = () => {
           </div>
 
           <div className={styles.inputGroup}>
-            <label className={styles.label}>{t('auth.password')}</label>
+            <label htmlFor="password" className={styles.label}>{t('auth.password')}</label>
             <input
+              id="password"
               type="password"
               name="password"
               value={formData.password}
