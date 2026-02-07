@@ -28,7 +28,7 @@ router = APIRouter(prefix="/billing", tags=["billing"])
 def verify_purchase_endpoint(
     request: VerifyPurchaseRequest,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)
+    current_user: User = Depends(get_current_user)
 ):
     """
     Verifica una compra de Google Play.
@@ -64,7 +64,7 @@ def verify_purchase_endpoint(
 @router.get("/status", response_model=SubscriptionStatusResponse)
 def get_subscription_status_endpoint(
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)
+    current_user: User = Depends(get_current_user)
 ):
     """
     Obtiene el estado actual de la suscripción de Google Play del usuario.
@@ -76,7 +76,7 @@ def get_subscription_status_endpoint(
 @router.post("/cancel")
 def cancel_subscription_endpoint(
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_auth)
+    current_user: User = Depends(get_current_user)
 ):
     """
     Cancela la suscripción de Google Play.
