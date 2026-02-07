@@ -17,3 +17,4 @@ pytz==2024.1
 # Google Play Billing
 google-auth==2.27.0
 google-api-python-client==2.115.0
+email-validator==2.1.0
