@@ -1,8 +1,116 @@
-/* OAuth Buttons */
+/* Layout general */
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--bg-secondary);
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  padding: 2rem;
+}
+
+.header {
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+/* Form */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.label {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.input {
+  width: 100%;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  outline: none;
+  background: #fff;
+  color: var(--text-primary);
+}
+
+.input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+.submitButton {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: none;
+  border-radius: 10px;
+  background: var(--primary-color);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.03s ease, background 0.2s ease;
+}
+
+.submitButton:hover {
+  background: var(--primary-hover);
+}
+
+.submitButton:active {
+  transform: scale(0.99);
+}
+
+/* Links */
+.footer {
+  margin-top: 1rem;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.footer a {
+  color: var(--primary-color);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* Divider + OAuth (lo que ya tenías, lo dejo mejor integrado) */
 .divider {
   display: flex;
   align-items: center;
-  margin: 2rem 0 1.5rem 0;
+  margin: 1.5rem 0 1rem 0;
 }
 
 .divider::before,
@@ -22,7 +130,7 @@
 .oauthButtons {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.9rem;
 }
 
 .googleButton,
@@ -32,59 +140,29 @@
   justify-content: center;
   gap: 0.75rem;
   width: 100%;
-  padding: 0.875rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
+  padding: 0.875rem 1rem;
+  border-radius: 10px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
   border: 1px solid #ddd;
-}
-
-.googleButton {
-  background: white;
-  color: #333;
+  background: #fff;
 }
 
 .googleButton:hover {
-  background: #f8f9fa;
-  border-color: #ccc;
+  background: #f7f7f7;
 }
 
 .facebookButton {
-  background: #1877F2;
+  background: #1877f2;
+  border-color: #1877f2;
   color: white;
-  border-color: #1877F2;
 }
 
 .facebookButton:hover {
-  background: #166fe5;
+  filter: brightness(0.95);
 }
 
 .oauthIcon {
   width: 20px;
   height: 20px;
-}
-
-.legalLinks {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-.legalLink {
-  color: #999;
-  font-size: 0.85rem;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.legalLink:hover {
-  color: #667eea;
-}
-
-.separator {
-  color: #ddd;
 }
