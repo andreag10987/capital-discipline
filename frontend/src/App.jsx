@@ -50,11 +50,7 @@ function App() {
     <Route path="upgrade" element={<UpgradePage />} />
   </Route>
 
-  {/* Rutas de Admin - También protegidas */}
-  <Route path="/admin" element={<PrivateRoute><AdminLayout /></PrivateRoute>}>
-    <Route index element={<AdminDashboard />} />
-    <Route path="users" element={<AdminUsers />} />
-  </Route>
+
 {/* Rutas de Admin - También protegidas */}
 <Route path="/admin" element={<PrivateRoute><AdminLayout /></PrivateRoute>}>
   <Route index element={<AdminDashboard />} />
