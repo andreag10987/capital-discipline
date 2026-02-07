@@ -9,7 +9,7 @@ from ...services.google_play_webhook_service import process_google_play_notifica
 
 from ...database import get_db
 from ...models.user import User
-from ...middleware.auth_required import require_auth
+from ..deps import get_current_user
 from ...schemas.google_play import (
     VerifyPurchaseRequest,
     VerifyPurchaseResponse,
