@@ -42,7 +42,7 @@ app.add_middleware(
     allow_origins=settings.cors_origins_list,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allow_headers=["Authorization", "Content-Type", "Accept-Language", "X-Requested-With"],
+    allow_headers=["*"],
 )
 
 # ── Middleware de errores globales ────────────
