@@ -12,7 +12,6 @@ from ..models.user import User
 from ..config import settings
 
 
-
 def get_plan_by_name(db: Session, plan_name: str) -> Optional[Plan]:
     """Obtiene un plan por nombre (FREE, BASIC, PRO)."""
     return db.query(Plan).filter(Plan.name == plan_name, Plan.is_active == True).first()
@@ -35,34 +34,45 @@ def get_user_plan(db: Session, user_id: int) -> Plan:
     """
     Obtiene el plan actual del usuario.
     Si no tiene suscripción, retorna FREE por defecto.
-    Si el usuario es ADMIN (por env var) y el bypass está activo,
-    retorna el plan más alto activo (preferiblemente PRO).
+
+    ADMIN BYPASS:
+    - Si ADMIN_BYPASS_PAYMENT=true y el email del usuario coincide con ADMIN_EMAIL,
+      retornamos un plan sintético con límites altos (sin depender de que exista PRO en DB).
     """
 
-    # ── ADMIN BYPASS ────────────────────────────────────────────
+    # ── ADMIN BYPASS (plan sintético) ───────────────────────────
     if settings.ADMIN_BYPASS_PAYMENT and settings.ADMIN_EMAIL:
         user = db.query(User).filter(User.id == user_id).first()
         if user and user.email and user.email.lower() == settings.ADMIN_EMAIL.lower():
-            pro_plan = get_plan_by_name(db, "PRO")
-            if pro_plan:
-                return pro_plan
-
-            # Si no existe PRO, tomar el plan activo más caro
-            top_plan = (
-                db.query(Plan)
-                .filter(Plan.is_active == True)
-                .order_by(Plan.price_usd.desc())
-                .first()
+            return Plan(
+                name="ADMIN",
+                display_name_es="Administrador",
+                display_name_en="Administrator",
+                price_usd=0.0,
+                features={
+                    # permisos
+                    "can_export_pdf": True,
+                    "can_export_excel": True,
+                    "can_generate_projections": True,
+                    "can_create_goals": True,
+                    "can_withdraw": True,
+                    "can_recalculate_withdrawals": True,
+                    # límites
+                    "max_daily_sessions": 999,
+                    "max_ops_per_session": 9999,
+                    "max_active_goals": 999,
+                    "history_days": 365,
+                },
+                is_active=True,
             )
-            if top_plan:
-                return top_plan
-    # ────────────────────────────────────────────────────────────
+    # ───────────────────────────────────────────────────────────
 
     subscription = get_user_active_subscription(db, user_id)
 
     if subscription and subscription.is_active():
         return subscription.plan
 
+    # Si no tiene suscripción activa, retornar FREE
     free_plan = get_plan_by_name(db, "FREE")
     if not free_plan:
         raise Exception("FREE plan not found in database")

@@ -16,6 +16,7 @@ from .api.routes import (
     goals,
     withdrawals,
     goal_reports,
+    goal_planner,
     admin
 )
 # Routers del módulo Goals
@@ -59,6 +60,7 @@ app.include_router(projections.router)
 app.include_router(goals.router)
 app.include_router(withdrawals.router)
 app.include_router(goal_reports.router)
+app.include_router(goal_planner.router)
 app.include_router(admin.router)
 app.include_router(billing.router)
 
