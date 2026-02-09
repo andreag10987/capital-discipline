@@ -1,14 +1,17 @@
 .card {
-  background-color: var(--bg-primary);
-  border-radius: 0.75rem;
+  background:
+    linear-gradient(180deg, rgba(30, 41, 59, 0.58), rgba(15, 23, 42, 0.86));
+  border-radius: var(--radius-lg);
   padding: 1.5rem;
   box-shadow: var(--shadow);
   border: 1px solid var(--border-color);
+  backdrop-filter: blur(10px);
 }
 
 .title {
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 1rem;
-  color: var(--text-primary);
+  color: #f1f5f9;
+  letter-spacing: 0.01em;
 }

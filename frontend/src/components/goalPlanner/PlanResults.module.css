@@ -6,9 +6,9 @@
 
 .warnings {
   padding: 1rem;
-  background-color: rgba(239, 68, 68, 0.1);
+  background-color: rgba(239, 68, 68, 0.16);
   border-left: 4px solid var(--danger-color);
-  border-radius: 0.5rem;
+  border-radius: 10px;
 }
 
 .warningTitle {
@@ -41,8 +41,9 @@
   flex-direction: column;
   gap: 0.5rem;
   padding: 1rem;
-  background-color: var(--bg-secondary);
-  border-radius: 0.5rem;
+  background-color: rgba(15, 23, 42, 0.76);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
 }
 
 .metricLabel {
@@ -76,9 +77,10 @@
   flex-direction: column;
   gap: 0.5rem;
   padding: 1.5rem;
-  background-color: var(--bg-secondary);
-  border-radius: 0.75rem;
+  background-color: rgba(15, 23, 42, 0.76);
+  border-radius: 12px;
   text-align: center;
+  border: 1px solid var(--border-color);
 }
 
 .projectionLabel {
@@ -109,7 +111,8 @@
 
 .limitItem {
   padding: 1rem;
-  background-color: var(--bg-secondary);
-  border-radius: 0.5rem;
+  background-color: rgba(15, 23, 42, 0.76);
+  border-radius: 10px;
   border-left: 4px solid var(--primary-color);
+  border: 1px solid var(--border-color);
 }

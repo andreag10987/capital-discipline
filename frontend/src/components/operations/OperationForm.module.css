@@ -24,8 +24,8 @@
 .resultButton {
   padding: 1rem;
   border: 2px solid var(--border-color);
-  border-radius: 0.5rem;
-  background-color: var(--bg-primary);
+  border-radius: 10px;
+  background-color: rgba(15, 23, 42, 0.82);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
@@ -50,17 +50,17 @@
 
 .resultButton.win.active {
   border-color: var(--success-color);
-  background-color: rgba(16, 185, 129, 0.1);
+  background-color: rgba(34, 197, 94, 0.16);
 }
 
 .resultButton.loss.active {
   border-color: var(--danger-color);
-  background-color: rgba(239, 68, 68, 0.1);
+  background-color: rgba(239, 68, 68, 0.16);
 }
 
 .resultButton.draw.active {
   border-color: var(--warning-color);
-  background-color: rgba(245, 158, 11, 0.1);
+  background-color: rgba(245, 158, 11, 0.17);
 }
 
 .riskOptions {
@@ -72,8 +72,8 @@
   flex: 1;
   padding: 1rem;
   border: 2px solid var(--border-color);
-  border-radius: 0.5rem;
-  background-color: var(--bg-primary);
+  border-radius: 10px;
+  background-color: rgba(15, 23, 42, 0.82);
   font-size: 1.25rem;
   font-weight: 700;
   cursor: pointer;
@@ -86,7 +86,7 @@
 
 .riskButton.active {
   border-color: var(--primary-color);
-  background-color: rgba(37, 99, 235, 0.1);
+  background-color: rgba(34, 211, 238, 0.13);
   color: var(--primary-color);
 }
 
@@ -99,8 +99,8 @@
 .commentButton {
   padding: 0.75rem;
   border: 1px solid var(--border-color);
-  border-radius: 0.5rem;
-  background-color: var(--bg-primary);
+  border-radius: 10px;
+  background-color: rgba(15, 23, 42, 0.82);
   text-align: left;
   cursor: pointer;
   transition: all 0.2s;
@@ -112,13 +112,13 @@
 
 .commentButton.active {
   border-color: var(--primary-color);
-  background-color: rgba(37, 99, 235, 0.1);
+  background-color: rgba(34, 211, 238, 0.13);
 }
 
 .customButton {
   padding: 0.75rem;
   border: 1px dashed var(--border-color);
-  border-radius: 0.5rem;
+  border-radius: 10px;
   background-color: transparent;
   color: var(--primary-color);
   cursor: pointer;
@@ -127,5 +127,5 @@
 }
 
 .customButton:hover {
-  background-color: rgba(37, 99, 235, 0.05);
+  background-color: rgba(34, 211, 238, 0.08);
 }

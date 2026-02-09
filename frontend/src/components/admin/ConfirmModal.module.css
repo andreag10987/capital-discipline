@@ -4,173 +4,117 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(2, 6, 23, 0.72);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  animation: fadeIn 0.2s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  backdrop-filter: blur(6px);
 }
 
 .modal {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(170deg, rgba(30, 41, 59, 0.95), rgba(10, 15, 30, 0.96));
+  border-radius: 14px;
+  box-shadow: var(--shadow-lg);
   max-width: 500px;
   width: 90%;
   max-height: 90vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  animation: slideUp 0.3s ease-out;
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  border: 1px solid var(--border-color);
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem;
-  border-bottom: 2px solid #e2e8f0;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #2d3748;
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: #f8fafc;
   margin: 0;
 }
 
 .closeButton {
   background: none;
   border: none;
-  font-size: 1.5rem;
-  color: #a0aec0;
+  font-size: 1.2rem;
+  color: #94a3b8;
   cursor: pointer;
   padding: 0.25rem;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  transition: all 0.2s;
 }
 
 .closeButton:hover {
-  background: #f7fafc;
-  color: #2d3748;
+  color: #e2e8f0;
 }
 
 .content {
-  padding: 1.5rem;
+  padding: 1rem;
   overflow-y: auto;
   flex: 1;
 }
 
 .content p {
-  margin: 0 0 1rem 0;
-  color: #4a5568;
-  font-size: 1rem;
+  margin: 0 0 0.75rem 0;
+  color: #cbd5e1;
+  font-size: 0.9rem;
   line-height: 1.6;
-}
-
-.content p:last-child {
-  margin-bottom: 0;
 }
 
 .footer {
   display: flex;
-  gap: 1rem;
-  padding: 1.5rem;
-  border-top: 2px solid #e2e8f0;
+  gap: 0.7rem;
+  padding: 0.95rem 1rem;
+  border-top: 1px solid var(--border-color);
 }
 
 .button {
   flex: 1;
-  padding: 0.875rem;
+  padding: 0.67rem;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 9px;
+  font-size: 0.86rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
 }
 
 .button:disabled {
-  opacity: 0.6;
+  opacity: 0.65;
   cursor: not-allowed;
 }
 
 .cancelButton {
-  background: #f7fafc;
-  color: #4a5568;
-  border: 2px solid #e2e8f0;
+  background: rgba(15, 23, 42, 0.85);
+  color: #cbd5e1;
+  border: 1px solid var(--border-color);
 }
 
 .cancelButton:hover:not(:disabled) {
-  background: #edf2f7;
-  border-color: #cbd5e0;
+  border-color: rgba(148, 163, 184, 0.45);
 }
 
 .primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  background: linear-gradient(135deg, #0ea5e9 0%, #22d3ee 100%);
+  color: #083344;
 }
 
 .success {
-  background: #48bb78;
-  color: white;
-}
-
-.success:hover:not(:disabled) {
-  background: #38a169;
+  background: rgba(34, 197, 94, 0.24);
+  color: #86efac;
 }
 
 .danger {
-  background: #f56565;
-  color: white;
-}
-
-.danger:hover:not(:disabled) {
-  background: #e53e3e;
+  background: rgba(239, 68, 68, 0.26);
+  color: #fca5a5;
 }
 
 @media (max-width: 768px) {
-  .modal {
-    width: 95%;
-    max-height: 95vh;
-  }
-
   .footer {
     flex-direction: column;
-  }
-
-  .button {
-    width: 100%;
   }
 }

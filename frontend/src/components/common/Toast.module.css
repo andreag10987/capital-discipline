@@ -10,13 +10,15 @@
 }
 
 .toast {
-  padding: 1rem 1.5rem;
-  border-radius: 0.5rem;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
   box-shadow: var(--shadow-lg);
   cursor: pointer;
   animation: slideIn 0.3s ease-out;
-  color: white;
-  font-weight: 500;
+  color: #ecfeff;
+  font-weight: 600;
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  backdrop-filter: blur(8px);
 }
 
 @keyframes slideIn {
@@ -31,17 +33,17 @@
 }
 
 .info {
-  background-color: var(--primary-color);
+  background-color: rgba(8, 145, 178, 0.78);
 }
 
 .success {
-  background-color: var(--success-color);
+  background-color: rgba(21, 128, 61, 0.78);
 }
 
 .error {
-  background-color: var(--danger-color);
+  background-color: rgba(185, 28, 28, 0.78);
 }
 
 .warning {
-  background-color: var(--warning-color);
+  background-color: rgba(217, 119, 6, 0.78);
 }

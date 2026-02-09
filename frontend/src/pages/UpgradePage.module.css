@@ -1,72 +1,66 @@
 .page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #f0f2ff 0%, #f8f9fa 100%);
-  padding: 2rem 1rem;
+  padding: 1.5rem 0.8rem 2rem;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
 }
 
 .title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 0.5rem;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  color: #f8fafc;
+  margin-bottom: 0.45rem;
 }
 
 .subtitle {
-  font-size: 1.1rem;
-  color: #666;
-  max-width: 600px;
+  font-size: 0.98rem;
+  color: #94a3b8;
+  max-width: 640px;
   margin: 0 auto;
 }
 
 .plansGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
+  gap: 1.1rem;
   max-width: 1200px;
-  margin: 0 auto 3rem auto;
+  margin: 0 auto 1.4rem auto;
 }
 
 .footer {
   text-align: center;
-  margin-top: 3rem;
+  margin-top: 1.5rem;
 }
 
 .backButton {
-  background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
-  padding: 0.75rem 2rem;
+  background: rgba(15, 23, 42, 0.84);
+  color: #bae6fd;
+  border: 1px solid var(--border-color);
+  padding: 0.72rem 1.2rem;
   border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.92rem;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .backButton:hover {
-  background: #667eea;
-  color: white;
+  border-color: rgba(34, 211, 238, 0.45);
+  color: #ecfeff;
 }
 
 .loading {
   text-align: center;
   padding: 4rem;
-  font-size: 1.2rem;
-  color: #666;
+  font-size: 1.05rem;
+  color: #94a3b8;
 }
 
 @media (max-width: 768px) {
-  .title {
-    font-size: 2rem;
-  }
-
   .plansGrid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
   }
 }
