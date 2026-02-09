@@ -10,7 +10,9 @@ from ..models.operation import Operation
 from ..models.trading_session import TradingSession
 from ..models.trading_day import TradingDay
 from ..models.account import Account
+from ..models.goal import Goal, GoalStatus
 from ..schemas.operation import OperationCreate
+from ..services.daily_plan_service import regenerate_goal_calendar
 
 
 def create_operation(
@@ -50,7 +52,7 @@ def create_operation(
     # amount = capital_actual * (risk_percent/100)
     amount = operation_data.amount
     if amount is None:
-        current_capital = float(account.current_capital or 0)
+        current_capital = float(account.capital or 0)
         if current_capital <= 0:
             raise ValueError("Invalid capital" if lang == "en" else "Capital inválido")
 
@@ -91,10 +93,18 @@ def create_operation(
         session.loss_count = (session.loss_count or 0) + 1
 
     # 7) Actualizar capital de la cuenta (neto)
-    account.current_capital = float(account.current_capital or 0) + float(profit)
+    account.capital = float(account.capital or 0) + float(profit)
 
     db.commit()
     db.refresh(new_operation)
+
+    # 8) Recalcular calendario de la meta activa para reajustar montos futuros.
+    active_goal = db.query(Goal).filter(
+        Goal.account_id == account.id,
+        Goal.status == GoalStatus.ACTIVE
+    ).first()
+    if active_goal:
+        regenerate_goal_calendar(db, active_goal.id)
 
     return new_operation
 

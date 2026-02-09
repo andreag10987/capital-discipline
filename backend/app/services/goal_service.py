@@ -11,6 +11,7 @@ from ..models.trading_day import TradingDay
 from ..schemas.goal_extended import (
     GoalCreateExtended, GoalUpdate, GoalResponseExtended, GoalProgressResponse
 )
+from ..services.daily_plan_service import regenerate_goal_calendar
 from ..utils.messages import get_message
 
 def create_goal(
@@ -68,6 +69,9 @@ def create_goal(
     db.add(new_goal)
     db.commit()
     db.refresh(new_goal)
+
+    # Generar plan diario proyectado desde hoy hasta alcanzar meta.
+    regenerate_goal_calendar(db, new_goal.id)
     
     # Calcular progreso
     response = GoalResponseExtended.from_orm(new_goal)
@@ -141,6 +145,9 @@ def update_goal(
     
     db.commit()
     db.refresh(goal_obj)
+
+    # Si cambia la configuración/meta, recalcular todo el calendario futuro.
+    regenerate_goal_calendar(db, goal_obj.id)
     
     return get_goal(db, user_id, goal_id, lang)
 

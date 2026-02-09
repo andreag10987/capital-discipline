@@ -7,7 +7,7 @@ from ...models.user import User
 from ...schemas.goal_extended import (
     GoalCreateExtended, GoalUpdate, GoalResponseExtended, GoalProgressResponse
 )
-from ...schemas.daily_plan import CalendarRangeRequest, CalendarResponse
+from ...schemas.daily_plan import CalendarRangeRequest, CalendarResponse, DailyPlanCloseRequest, DailyPlanResponse
 from ...services import goal_service, daily_plan_service
 
 router = APIRouter(prefix="/goals", tags=["Goals"])
@@ -131,4 +131,27 @@ def get_goal_calendar(
     """
     return daily_plan_service.get_calendar(
         db, current_user.id, goal_id, range_request, accept_language
+    )
+
+@router.post("/{goal_id}/close-day", response_model=DailyPlanResponse)
+def close_goal_day(
+    goal_id: int,
+    close_request: Optional[DailyPlanCloseRequest] = None,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Cerrar manualmente un día del calendario del objetivo.
+
+    Body opcional:
+    - date: fecha a cerrar (por defecto hoy)
+    - notes: nota de cierre
+    - blocked_reason: si viene, el día queda BLOCKED
+    - realized_pnl: ajuste manual del PnL del día
+    """
+    return daily_plan_service.close_goal_day(
+        db=db,
+        user_id=current_user.id,
+        goal_id=goal_id,
+        close_data=close_request,
     )

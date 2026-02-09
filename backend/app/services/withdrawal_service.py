@@ -5,6 +5,7 @@ from typing import List, Optional
 from ..models.withdrawal import Withdrawal
 from ..models.account import Account
 from ..models.goal import Goal, GoalStatus
+from ..services.daily_plan_service import regenerate_goal_calendar
 from ..schemas.withdrawal import WithdrawalCreate, WithdrawalResponse, WithdrawalListResponse
 from ..utils.messages import get_message
 
@@ -57,7 +58,11 @@ def create_withdrawal(
     db.add(new_withdrawal)
     db.commit()
     db.refresh(new_withdrawal)
-    
+
+    # Recalcular calendario de meta activa con el nuevo capital base.
+    if active_goal:
+        regenerate_goal_calendar(db, active_goal.id)
+
     return WithdrawalResponse.from_orm(new_withdrawal)
 
 def get_withdrawals(

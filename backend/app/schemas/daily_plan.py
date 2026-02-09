@@ -24,6 +24,12 @@ class DailyPlanUpdate(BaseModel):
     notes: Optional[str] = None
     blocked_reason: Optional[str] = None
 
+class DailyPlanCloseRequest(BaseModel):
+    date: Optional[date] = None
+    notes: Optional[str] = None
+    blocked_reason: Optional[str] = None
+    realized_pnl: Optional[float] = None
+
 class DailyPlanResponse(BaseModel):
     id: int
     goal_id: int
