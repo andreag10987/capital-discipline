@@ -1,14 +1,60 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import goalsService from '../../services/goals';
 import styles from './CalendarView.module.css';
 
+const DAYS_FILTER = [7, 30, 60, 90];
+
+const toISODate = (rawDate) => {
+  const d = new Date(rawDate);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+const getDayVisualStatus = (plan) => {
+  if (!plan) return 'no_data';
+  if (plan.status === 'BLOCKED') return 'blocked';
+  if (!plan.actual_ops || plan.actual_ops === 0) return 'no_trade';
+  if (plan.realized_pnl > 0) return 'profit';
+  if (plan.realized_pnl < 0) return 'loss';
+  return 'draw';
+};
+
+const buildMonthGrid = (monthDate) => {
+  const year = monthDate.getFullYear();
+  const month = monthDate.getMonth();
+  const firstDay = new Date(year, month, 1);
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const mondayBasedStart = (firstDay.getDay() + 6) % 7;
+  const totalCells = 42;
+  const cells = [];
+
+  for (let i = 0; i < totalCells; i += 1) {
+    const dayNumber = i - mondayBasedStart + 1;
+    const inCurrentMonth = dayNumber > 0 && dayNumber <= daysInMonth;
+    const date = new Date(year, month, dayNumber);
+
+    cells.push({
+      inCurrentMonth,
+      date,
+      isoDate: inCurrentMonth ? toISODate(date) : null,
+      dayNumber: inCurrentMonth ? dayNumber : null,
+    });
+  }
+
+  return cells;
+};
+
 const CalendarView = ({ goalId }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [calendar, setCalendar] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selectedDay, setSelectedDay] = useState(null);
-  const [viewDays, setViewDays] = useState(30);
+  const [viewDays, setViewDays] = useState(90);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [selectedPlan, setSelectedPlan] = useState(null);
 
   useEffect(() => {
     if (goalId) loadCalendar();
@@ -26,31 +72,44 @@ const CalendarView = ({ goalId }) => {
     }
   };
 
+  const plansByDate = useMemo(() => {
+    const map = new Map();
+    if (!calendar?.daily_plans) return map;
+
+    calendar.daily_plans.forEach((plan) => {
+      map.set(toISODate(plan.date), plan);
+    });
+
+    return map;
+  }, [calendar]);
+
+  const monthCells = useMemo(() => buildMonthGrid(currentMonth), [currentMonth]);
+
+  const weekDayNames = useMemo(() => {
+    const baseMonday = new Date(2024, 0, 1); // Monday
+    return Array.from({ length: 7 }, (_, idx) => {
+      const d = new Date(baseMonday);
+      d.setDate(baseMonday.getDate() + idx);
+      return d.toLocaleDateString(i18n.language, { weekday: 'short' });
+    });
+  }, [i18n.language]);
+
+  const monthTitle = useMemo(
+    () => currentMonth.toLocaleDateString(i18n.language, { month: 'long', year: 'numeric' }),
+    [currentMonth, i18n.language],
+  );
+
+  const closeModal = () => setSelectedPlan(null);
+
   if (loading) return <div className={styles.loading}>{t('common.loading')}</div>;
   if (!calendar) return null;
-
-  const statusColor = {
-    PLANNED: '#94a3b8',
-    IN_PROGRESS: '#60a5fa',
-    COMPLETED: '#34d399',
-    BLOCKED: '#f87171',
-  };
-
-  const formatDate = (rawDate) => {
-    const parsed = new Date(rawDate);
-    return parsed.toLocaleDateString(undefined, {
-      weekday: 'short',
-      day: '2-digit',
-      month: 'short',
-    });
-  };
 
   return (
     <div className={styles.container}>
       <div className={styles.filterRow}>
         <span className={styles.filterLabel}>{t('goals.calendar.showDays')}:</span>
         <div className={styles.filterButtons}>
-          {[7, 30, 60, 90].map((d) => (
+          {DAYS_FILTER.map((d) => (
             <button
               key={d}
               className={`${styles.filterBtn} ${viewDays === d ? styles.filterBtnActive : ''}`}
@@ -89,99 +148,110 @@ const CalendarView = ({ goalId }) => {
         </div>
       </div>
 
-      <div className={styles.daysList}>
-        {calendar.daily_plans.length === 0 ? (
-          <div className={styles.emptyState}>{t('goals.calendar.noData')}</div>
-        ) : (
-          [...calendar.daily_plans].reverse().map((plan) => (
-            <div
-              key={plan.id}
-              className={`${styles.dayCard} ${selectedDay === plan.id ? styles.dayCardSelected : ''}`}
-              onClick={() => setSelectedDay(selectedDay === plan.id ? null : plan.id)}
-            >
-              <div className={styles.dayHeader}>
-                <div className={styles.dayLeft}>
-                  <div className={styles.statusDot} style={{ background: statusColor[plan.status] }} />
-                  <span className={styles.dayDate}>{formatDate(plan.date)}</span>
-                </div>
-                <div className={styles.dayRight}>
-                  <span className={`${styles.dayPnl} ${plan.realized_pnl >= 0 ? styles.green : styles.red}`}>
-                    {plan.realized_pnl >= 0 ? '+' : ''}${plan.realized_pnl.toFixed(2)}
-                  </span>
-                  <span className={`${styles.dayStatus} ${styles[`status${plan.status}`]}`}>
-                    {t(`goals.calendar.status.${plan.status.toLowerCase()}`)}
-                  </span>
-                  <span className={styles.expandHint}>{selectedDay === plan.id ? '-' : '+'}</span>
-                </div>
-              </div>
-
-              <div className={styles.dayMetrics}>
-                <div className={styles.metricChip}>
-                  <span className={styles.metricLabel}>{t('goals.calendar.stake')}</span>
-                  <span className={styles.metricValue}>${plan.planned_stake.toFixed(2)}</span>
-                </div>
-                <div className={styles.metricChip}>
-                  <span className={styles.metricLabel}>{t('goals.calendar.plannedOps')}</span>
-                  <span className={styles.metricValue}>{plan.planned_ops_total}</span>
-                </div>
-                <div className={styles.metricChip}>
-                  <span className={styles.metricLabel}>{t('goals.calendar.actualOps')}</span>
-                  <span className={styles.metricValue}>{plan.actual_ops}</span>
-                </div>
-                <div className={styles.metricChip}>
-                  <span className={styles.metricLabel}>{t('goals.calendar.sessions')}</span>
-                  <span className={styles.metricValue}>{plan.actual_sessions}/{plan.planned_sessions}</span>
-                </div>
-              </div>
-
-              {selectedDay === plan.id && (
-                <div className={styles.dayDetail}>
-                  <div className={styles.detailGrid}>
-                    <div className={styles.detailItem}>
-                      <span className={styles.detailLabel}>{t('goals.calendar.capitalStart')}</span>
-                      <span className={styles.detailValue}>${plan.capital_start_of_day.toFixed(2)}</span>
-                    </div>
-                    <div className={styles.detailItem}>
-                      <span className={styles.detailLabel}>{t('goals.calendar.plannedOps')}</span>
-                      <span className={styles.detailValue}>{plan.planned_ops_total}</span>
-                    </div>
-                    <div className={styles.detailItem}>
-                      <span className={styles.detailLabel}>{t('goals.calendar.actualOps')}</span>
-                      <span className={styles.detailValue}>{plan.actual_ops}</span>
-                    </div>
-                    <div className={styles.detailItem}>
-                      <span className={styles.detailLabel}>{t('goals.calendar.stake')}</span>
-                      <span className={styles.detailValue}>${plan.planned_stake.toFixed(2)}</span>
-                    </div>
-                    <div className={styles.detailItem}>
-                      <span className={styles.detailLabel}>{t('goals.calendar.wins')}</span>
-                      <span className={`${styles.detailValue} ${styles.green}`}>{plan.wins}</span>
-                    </div>
-                    <div className={styles.detailItem}>
-                      <span className={styles.detailLabel}>{t('goals.calendar.losses')}</span>
-                      <span className={`${styles.detailValue} ${styles.red}`}>{plan.losses}</span>
-                    </div>
-                    <div className={styles.detailItem}>
-                      <span className={styles.detailLabel}>{t('goals.calendar.draws')}</span>
-                      <span className={styles.detailValue}>{plan.draws}</span>
-                    </div>
-                    <div className={styles.detailItem}>
-                      <span className={styles.detailLabel}>{t('goals.calendar.sessions')}</span>
-                      <span className={styles.detailValue}>{plan.actual_sessions} / {plan.planned_sessions}</span>
-                    </div>
-                  </div>
-                  {plan.blocked_reason && (
-                    <div className={styles.blockedReason}>Bloqueado: {plan.blocked_reason}</div>
-                  )}
-                  {plan.notes && (
-                    <div className={styles.notes}>Notas: {plan.notes}</div>
-                  )}
-                </div>
-              )}
-            </div>
-          ))
-        )}
+      <div className={styles.legend}>
+        <span className={styles.legendItem}><i className={`${styles.dot} ${styles.dotProfit}`} />Profit</span>
+        <span className={styles.legendItem}><i className={`${styles.dot} ${styles.dotLoss}`} />Loss</span>
+        <span className={styles.legendItem}><i className={`${styles.dot} ${styles.dotDraw}`} />Draw</span>
+        <span className={styles.legendItem}><i className={`${styles.dot} ${styles.dotNoTrade}`} />Sin operar</span>
+        <span className={styles.legendItem}><i className={`${styles.dot} ${styles.dotBlocked}`} />Bloqueado</span>
       </div>
+
+      <div className={styles.monthHeader}>
+        <button
+          type="button"
+          className={styles.monthNavBtn}
+          onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))}
+        >
+          {'<'}
+        </button>
+        <h3 className={styles.monthTitle}>{monthTitle}</h3>
+        <button
+          type="button"
+          className={styles.monthNavBtn}
+          onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))}
+        >
+          {'>'}
+        </button>
+      </div>
+
+      <div className={styles.calendarGrid}>
+        {weekDayNames.map((name) => (
+          <div key={name} className={styles.weekDay}>{name}</div>
+        ))}
+
+        {monthCells.map((cell, idx) => {
+          const plan = cell.isoDate ? plansByDate.get(cell.isoDate) : null;
+          const visualStatus = getDayVisualStatus(plan);
+
+          return (
+            <button
+              key={`${cell.isoDate || 'empty'}-${idx}`}
+              type="button"
+              disabled={!cell.inCurrentMonth || !plan}
+              onClick={() => plan && setSelectedPlan(plan)}
+              className={[
+                styles.dayCell,
+                !cell.inCurrentMonth ? styles.dayCellOut : '',
+                plan ? styles.dayCellActive : '',
+                plan ? styles[`status_${visualStatus}`] : '',
+              ].join(' ')}
+            >
+              <span className={styles.dayNumber}>{cell.dayNumber || ''}</span>
+              {plan && (
+                <span className={styles.dayPnl}>
+                  {plan.realized_pnl > 0 ? '+' : ''}{plan.realized_pnl.toFixed(2)}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {selectedPlan && (
+        <div className={styles.modalBackdrop} onClick={closeModal}>
+          <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <h4>
+                {new Date(selectedPlan.date).toLocaleDateString(i18n.language, {
+                  weekday: 'long',
+                  day: '2-digit',
+                  month: 'long',
+                  year: 'numeric',
+                })}
+              </h4>
+              <button type="button" className={styles.closeBtn} onClick={closeModal}>X</button>
+            </div>
+
+            <div className={styles.modalStatusRow}>
+              <span className={`${styles.dayStatus} ${styles[`status_${getDayVisualStatus(selectedPlan)}`]}`}>
+                {selectedPlan.status}
+              </span>
+              <span className={`${styles.modalPnl} ${selectedPlan.realized_pnl >= 0 ? styles.green : styles.red}`}>
+                {selectedPlan.realized_pnl >= 0 ? '+' : ''}${selectedPlan.realized_pnl.toFixed(2)}
+              </span>
+            </div>
+
+            <div className={styles.detailGrid}>
+              <div className={styles.detailItem}><span>{t('goals.calendar.capitalStart')}</span><strong>${selectedPlan.capital_start_of_day.toFixed(2)}</strong></div>
+              <div className={styles.detailItem}><span>{t('goals.calendar.stake')}</span><strong>${selectedPlan.planned_stake.toFixed(2)}</strong></div>
+              <div className={styles.detailItem}><span>{t('goals.calendar.plannedOps')}</span><strong>{selectedPlan.planned_ops_total}</strong></div>
+              <div className={styles.detailItem}><span>{t('goals.calendar.actualOps')}</span><strong>{selectedPlan.actual_ops}</strong></div>
+              <div className={styles.detailItem}><span>{t('goals.calendar.wins')}</span><strong>{selectedPlan.wins}</strong></div>
+              <div className={styles.detailItem}><span>{t('goals.calendar.losses')}</span><strong>{selectedPlan.losses}</strong></div>
+              <div className={styles.detailItem}><span>{t('goals.calendar.draws')}</span><strong>{selectedPlan.draws}</strong></div>
+              <div className={styles.detailItem}><span>{t('goals.calendar.sessions')}</span><strong>{selectedPlan.actual_sessions}/{selectedPlan.planned_sessions}</strong></div>
+            </div>
+
+            {selectedPlan.blocked_reason && (
+              <div className={styles.blockedReason}>Bloqueado: {selectedPlan.blocked_reason}</div>
+            )}
+
+            {selectedPlan.notes && (
+              <div className={styles.notes}>Notas: {selectedPlan.notes}</div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

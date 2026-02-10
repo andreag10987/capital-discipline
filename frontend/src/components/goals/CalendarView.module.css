@@ -87,164 +87,214 @@
   color: #f87171;
 }
 
-.daysList {
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 0.9rem;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #cbd5e1;
+  font-size: 0.8rem;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.dotProfit { background: #16a34a; }
+.dotLoss { background: #dc2626; }
+.dotDraw { background: #f59e0b; }
+.dotNoTrade { background: #64748b; }
+.dotBlocked { background: #7c3aed; }
+
+.monthHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.7rem;
+}
+
+.monthTitle {
+  margin: 0;
+  color: #e2e8f0;
+  font-size: 1rem;
+  text-transform: capitalize;
+}
+
+.monthNavBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: #cbd5e1;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.monthNavBtn:hover {
+  border-color: #38bdf8;
+  color: #e2e8f0;
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.weekDay {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.25rem 0;
+}
+
+.dayCell {
+  min-height: 86px;
+  border-radius: 10px;
+  border: 1px solid #243041;
+  background: #0a1324;
+  padding: 0.45rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  max-height: 560px;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-.daysList::-webkit-scrollbar {
-  width: 7px;
-}
-
-.daysList::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 4px;
-}
-
-.emptyState {
-  text-align: center;
-  padding: 2rem;
-  color: #94a3b8;
-  border: 1px dashed #334155;
-  border-radius: 10px;
-}
-
-.dayCard {
-  background: linear-gradient(160deg, rgba(15, 23, 42, 0.95), rgba(2, 8, 23, 0.95));
-  border: 1px solid #334155;
-  border-radius: 12px;
-  overflow: hidden;
+  align-items: flex-start;
+  justify-content: space-between;
   cursor: pointer;
-  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
 }
 
-.dayCard:hover {
-  border-color: #38bdf8;
-  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.2);
+.dayCellOut {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.dayCellActive:hover {
   transform: translateY(-1px);
+  border-color: #38bdf8;
+  box-shadow: 0 8px 18px rgba(14, 165, 233, 0.15);
 }
 
-.dayCardSelected {
-  border-color: #22d3ee;
+.dayNumber {
+  color: #e2e8f0;
+  font-weight: 700;
+  font-size: 0.9rem;
 }
 
-.dayHeader {
+.dayPnl {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+.status_profit {
+  border-color: rgba(22, 163, 74, 0.7);
+  background: linear-gradient(165deg, rgba(22, 163, 74, 0.22), rgba(10, 19, 36, 0.95));
+}
+
+.status_loss {
+  border-color: rgba(220, 38, 38, 0.7);
+  background: linear-gradient(165deg, rgba(220, 38, 38, 0.24), rgba(10, 19, 36, 0.95));
+}
+
+.status_draw {
+  border-color: rgba(245, 158, 11, 0.7);
+  background: linear-gradient(165deg, rgba(245, 158, 11, 0.24), rgba(10, 19, 36, 0.95));
+}
+
+.status_no_trade {
+  border-color: rgba(100, 116, 139, 0.65);
+  background: linear-gradient(165deg, rgba(100, 116, 139, 0.23), rgba(10, 19, 36, 0.95));
+}
+
+.status_blocked {
+  border-color: rgba(124, 58, 237, 0.7);
+  background: linear-gradient(165deg, rgba(124, 58, 237, 0.24), rgba(10, 19, 36, 0.95));
+}
+
+.status_no_data {
+  border-color: #243041;
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.62);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 1rem;
+}
+
+.modalCard {
+  width: min(680px, 100%);
+  background: #0b1324;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 16px 40px rgba(2, 6, 23, 0.6);
+}
+
+.modalHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  padding: 0.85rem 1rem;
+  margin-bottom: 0.7rem;
 }
 
-.dayLeft {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.statusDot {
-  width: 11px;
-  height: 11px;
-  border-radius: 999px;
-  flex-shrink: 0;
-}
-
-.dayDate {
-  font-weight: 700;
+.modalHeader h4 {
+  margin: 0;
   color: #e2e8f0;
-  font-size: 0.95rem;
+  text-transform: capitalize;
+  font-size: 1rem;
 }
 
-.dayRight {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.dayPnl {
+.closeBtn {
+  border: 1px solid #334155;
+  background: #111c31;
+  color: #cbd5e1;
+  border-radius: 8px;
+  width: 30px;
+  height: 30px;
   font-weight: 700;
-  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.closeBtn:hover {
+  border-color: #38bdf8;
+}
+
+.modalStatusRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
 }
 
 .dayStatus {
+  border-radius: 999px;
+  padding: 0.28rem 0.6rem;
   font-size: 0.72rem;
-  padding: 0.22rem 0.56rem;
-  border-radius: 999px;
-  font-weight: 700;
   text-transform: uppercase;
-}
-
-.expandHint {
-  width: 22px;
-  height: 22px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  border: 1px solid #334155;
-  color: #cbd5e1;
-  font-weight: 700;
-  font-size: 0.85rem;
-}
-
-.statusPLANNED {
-  background: rgba(148, 163, 184, 0.18);
-  color: #cbd5e1;
-}
-
-.statusIN_PROGRESS {
-  background: rgba(96, 165, 250, 0.2);
-  color: #93c5fd;
-}
-
-.statusCOMPLETED {
-  background: rgba(52, 211, 153, 0.2);
-  color: #6ee7b7;
-}
-
-.statusBLOCKED {
-  background: rgba(248, 113, 113, 0.2);
-  color: #fca5a5;
-}
-
-.dayMetrics {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.5rem;
-  padding: 0 1rem 0.9rem;
-}
-
-.metricChip {
-  background: rgba(15, 23, 42, 0.85);
-  border: 1px solid #334155;
-  border-radius: 8px;
-  padding: 0.45rem 0.55rem;
-}
-
-.metricLabel {
-  display: block;
-  font-size: 0.68rem;
-  color: #94a3b8;
-  text-transform: uppercase;
-  margin-bottom: 0.12rem;
-}
-
-.metricValue {
-  font-size: 0.9rem;
-  font-weight: 700;
   color: #e2e8f0;
+  border: 1px solid #334155;
 }
 
-.dayDetail {
-  border-top: 1px solid #334155;
-  padding: 0.9rem 1rem 1rem;
-  background: rgba(2, 8, 23, 0.7);
+.modalPnl {
+  font-size: 1rem;
+  font-weight: 700;
 }
 
 .detailGrid {
@@ -254,31 +304,32 @@
 }
 
 .detailItem {
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 0.5rem 0.55rem;
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
 }
 
-.detailLabel {
-  font-size: 0.72rem;
+.detailItem span {
   color: #94a3b8;
-  text-transform: uppercase;
+  font-size: 0.72rem;
 }
 
-.detailValue {
-  font-size: 0.92rem;
-  font-weight: 700;
+.detailItem strong {
   color: #e2e8f0;
+  font-size: 0.92rem;
 }
 
 .blockedReason {
   margin-top: 0.7rem;
   background: rgba(248, 113, 113, 0.2);
-  color: #fca5a5;
+  color: #fecaca;
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
-  font-size: 0.85rem;
-  border: 1px solid rgba(248, 113, 113, 0.35);
+  border: 1px solid rgba(248, 113, 113, 0.4);
 }
 
 .notes {
@@ -296,27 +347,33 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .dayMetrics,
   .detailGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 680px) {
   .summaryRow {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .dayHeader {
-    align-items: flex-start;
-    flex-direction: column;
+  .calendarGrid {
+    gap: 0.35rem;
   }
 
-  .dayRight {
-    justify-content: flex-start;
+  .dayCell {
+    min-height: 70px;
+    padding: 0.35rem;
   }
 
-  .dayMetrics,
+  .dayNumber {
+    font-size: 0.8rem;
+  }
+
+  .dayPnl {
+    font-size: 0.68rem;
+  }
+
   .detailGrid {
     grid-template-columns: 1fr;
   }
