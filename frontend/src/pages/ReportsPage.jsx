@@ -19,12 +19,15 @@ export default function ReportsPage() {
   }, [])
 
   const loadData = async (days) => {
+    setLoading(true)
     try {
-      const reportsData = await getReports(days)
+      const [reportsData, proj15, proj30] = await Promise.all([
+        getReports(days),
+        getProjections(15),
+        getProjections(30),
+      ])
       setReports(reportsData)
-      const proj15 = await getProjections(15)
       setProjection15(proj15)
-      const proj30 = await getProjections(30)
       setProjection30(proj30)
     } catch (error) {
       addToast(t('common.error'), 'error')

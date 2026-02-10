@@ -1,3 +1,4 @@
+from sqlalchemy import case, func
 from sqlalchemy.orm import Session
 from datetime import date, timedelta
 from ..models.account import Account
@@ -21,70 +22,84 @@ def get_reports(db: Session, user_id: int, days: int) -> ReportResponse:
     end_date = date.today()
     start_date = end_date - timedelta(days=days - 1)
     
-    trading_days = db.query(TradingDay).filter(
-        TradingDay.account_id == account.id,
-        TradingDay.date >= start_date,
-        TradingDay.date <= end_date
-    ).all()
-    
+    aggregated_days = (
+        db.query(
+            TradingDay.date.label("date"),
+            TradingDay.drawdown.label("drawdown"),
+            func.coalesce(
+                func.sum(
+                    case((Operation.result == OperationResult.WIN, Operation.profit), else_=0.0)
+                ),
+                0.0,
+            ).label("day_profit"),
+            func.coalesce(
+                func.sum(
+                    case((Operation.result == OperationResult.LOSS, -Operation.profit), else_=0.0)
+                ),
+                0.0,
+            ).label("day_loss"),
+            func.coalesce(func.count(Operation.id), 0).label("day_operations"),
+            func.coalesce(
+                func.sum(case((Operation.result == OperationResult.WIN, 1), else_=0)),
+                0,
+            ).label("day_wins"),
+            func.coalesce(
+                func.sum(case((Operation.result == OperationResult.LOSS, 1), else_=0)),
+                0,
+            ).label("day_losses"),
+            func.coalesce(
+                func.sum(case((Operation.result == OperationResult.DRAW, 1), else_=0)),
+                0,
+            ).label("day_draws"),
+        )
+        .outerjoin(TradingSession, TradingSession.trading_day_id == TradingDay.id)
+        .outerjoin(Operation, Operation.session_id == TradingSession.id)
+        .filter(
+            TradingDay.account_id == account.id,
+            TradingDay.date >= start_date,
+            TradingDay.date <= end_date,
+        )
+        .group_by(TradingDay.id, TradingDay.date, TradingDay.drawdown)
+        .order_by(TradingDay.date.asc())
+        .all()
+    )
+
     metrics = []
     total_operations = 0
     total_profit = 0.0
     total_loss = 0.0
     total_wins = 0
-    total_losses = 0
-    total_draws = 0
     total_drawdown = 0.0
-    
-    for td in trading_days:
-        sessions = db.query(TradingSession).filter(
-            TradingSession.trading_day_id == td.id
-        ).all()
-        
-        day_profit = 0.0
-        day_loss = 0.0
-        day_operations = 0
-        day_wins = 0
-        day_losses = 0
-        day_draws = 0
-        
-        for session in sessions:
-            operations = db.query(Operation).filter(
-                Operation.session_id == session.id
-            ).all()
-            
-            for op in operations:
-                day_operations += 1
-                if op.result == OperationResult.WIN:
-                    day_wins += 1
-                    day_profit += op.profit
-                elif op.result == OperationResult.LOSS:
-                    day_losses += 1
-                    day_loss += abs(op.profit)
-                else:
-                    day_draws += 1
-        
-        metrics.append(DailyMetric(
-            date=td.date,
-            capital=account.capital,
-            profit=day_profit,
-            loss=day_loss,
-            operations=day_operations,
-            wins=day_wins,
-            losses=day_losses,
-            draws=day_draws
-        ))
-        
+
+    for row in aggregated_days:
+        day_profit = float(row.day_profit or 0.0)
+        day_loss = float(row.day_loss or 0.0)
+        day_operations = int(row.day_operations or 0)
+        day_wins = int(row.day_wins or 0)
+        day_losses = int(row.day_losses or 0)
+        day_draws = int(row.day_draws or 0)
+
+        metrics.append(
+            DailyMetric(
+                date=row.date,
+                capital=float(account.capital),
+                profit=day_profit,
+                loss=day_loss,
+                operations=day_operations,
+                wins=day_wins,
+                losses=day_losses,
+                draws=day_draws,
+            )
+        )
+
         total_operations += day_operations
         total_profit += day_profit
         total_loss += day_loss
         total_wins += day_wins
-        total_losses += day_losses
-        total_draws += day_draws
-        total_drawdown += td.drawdown
-    
+        total_drawdown += float(row.drawdown or 0.0)
+
     winrate = (total_wins / total_operations * 100) if total_operations > 0 else 0.0
-    avg_drawdown = (total_drawdown / len(trading_days)) if trading_days else 0.0
+    avg_drawdown = (total_drawdown / len(aggregated_days)) if aggregated_days else 0.0
     
     return ReportResponse(
         metrics=metrics,

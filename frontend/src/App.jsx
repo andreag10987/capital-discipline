@@ -1,25 +1,28 @@
+import { Suspense, lazy } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthStore } from './store/authStore'
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
-import DashboardPage from './pages/DashboardPage'
-import SessionsPage from './pages/SessionsPage'
-import OperationsPage from './pages/OperationsPage'
-import ReportsPage from './pages/ReportsPage'
-import GoalPlannerPage from './pages/GoalPlannerPage'
-import GoalsPage from './pages/GoalsPage'
-import PrivacyPage from './pages/PrivacyPage'
-import SupportPage from './pages/SupportPage'
-import DisclaimerPage from './pages/DisclaimerPage'
-import Layout from './components/layout/Layout'
 import Toast from './components/common/Toast'
 import ErrorBoundary from './components/common/ErrorBoundary'
 import './App.css'
-import UpgradePage from './pages/UpgradePage'
-import AdminLayout from './pages/admin/AdminLayout'
-import AdminDashboard from './pages/admin/AdminDashboard'
-import AdminUsers from './pages/admin/AdminUsers'
-import AdminUserDetail from './pages/admin/AdminUserDetail'
+import styles from './pages/DashboardPage.module.css'
+
+const LoginPage = lazy(() => import('./pages/LoginPage'))
+const RegisterPage = lazy(() => import('./pages/RegisterPage'))
+const DashboardPage = lazy(() => import('./pages/DashboardPage'))
+const SessionsPage = lazy(() => import('./pages/SessionsPage'))
+const OperationsPage = lazy(() => import('./pages/OperationsPage'))
+const ReportsPage = lazy(() => import('./pages/ReportsPage'))
+const GoalPlannerPage = lazy(() => import('./pages/GoalPlannerPage'))
+const GoalsPage = lazy(() => import('./pages/GoalsPage'))
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'))
+const SupportPage = lazy(() => import('./pages/SupportPage'))
+const DisclaimerPage = lazy(() => import('./pages/DisclaimerPage'))
+const Layout = lazy(() => import('./components/layout/Layout'))
+const UpgradePage = lazy(() => import('./pages/UpgradePage'))
+const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'))
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
+const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'))
+const AdminUserDetail = lazy(() => import('./pages/admin/AdminUserDetail'))
 
 function PrivateRoute({ children }) {
   const { token } = useAuthStore()
@@ -31,32 +34,31 @@ function App() {
     <ErrorBoundary>
       <BrowserRouter>
         <Toast />
-        <Routes>
-          {/* Rutas públicas */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/privacy" element={<PrivacyPage />} />
-          <Route path="/support" element={<SupportPage />} />
-          <Route path="/disclaimer" element={<DisclaimerPage />} />
+        <Suspense fallback={<div className={styles.loading}>Cargando...</div>}>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/support" element={<SupportPage />} />
+            <Route path="/disclaimer" element={<DisclaimerPage />} />
 
-          {/* Rutas privadas - Dashboard principal */}
-          <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
-            <Route index element={<DashboardPage />} />
-            <Route path="sessions" element={<SessionsPage />} />
-            <Route path="operations/:sessionId" element={<OperationsPage />} />
-            <Route path="reports" element={<ReportsPage />} />
-            <Route path="goal-planner" element={<GoalPlannerPage />} />
-            <Route path="goals" element={<GoalsPage />} />
-            <Route path="upgrade" element={<UpgradePage />} />
-          </Route>
+            <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
+              <Route index element={<DashboardPage />} />
+              <Route path="sessions" element={<SessionsPage />} />
+              <Route path="operations/:sessionId" element={<OperationsPage />} />
+              <Route path="reports" element={<ReportsPage />} />
+              <Route path="goal-planner" element={<GoalPlannerPage />} />
+              <Route path="goals" element={<GoalsPage />} />
+              <Route path="upgrade" element={<UpgradePage />} />
+            </Route>
 
-          {/* Rutas de Admin - También protegidas */}
-          <Route path="/admin" element={<PrivateRoute><AdminLayout /></PrivateRoute>}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="users" element={<AdminUsers />} />
-            <Route path="users/:userId" element={<AdminUserDetail />} />
-          </Route>
-        </Routes>
+            <Route path="/admin" element={<PrivateRoute><AdminLayout /></PrivateRoute>}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="users/:userId" element={<AdminUserDetail />} />
+            </Route>
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </ErrorBoundary>
   )

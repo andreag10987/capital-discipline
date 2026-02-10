@@ -29,9 +29,11 @@ export default function DashboardPage() {
 
   const loadData = async () => {
     try {
-      const accountData = await getAccount()
+      const [accountData, sessionsData] = await Promise.all([
+        getAccount(),
+        getSessions(),
+      ])
       setAccount(accountData)
-      const sessionsData = await getSessions()
       setSessions(sessionsData)
       setIsBlocked(false)
     } catch (error) {
