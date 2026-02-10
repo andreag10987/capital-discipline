@@ -30,19 +30,27 @@ const CalendarView = ({ goalId }) => {
   if (!calendar) return null;
 
   const statusColor = {
-    PLANNED: '#aaa',
-    IN_PROGRESS: '#667eea',
-    COMPLETED: '#28a745',
-    BLOCKED: '#dc3545',
+    PLANNED: '#94a3b8',
+    IN_PROGRESS: '#60a5fa',
+    COMPLETED: '#34d399',
+    BLOCKED: '#f87171',
+  };
+
+  const formatDate = (rawDate) => {
+    const parsed = new Date(rawDate);
+    return parsed.toLocaleDateString(undefined, {
+      weekday: 'short',
+      day: '2-digit',
+      month: 'short',
+    });
   };
 
   return (
     <div className={styles.container}>
-      {/* Filtro de días */}
       <div className={styles.filterRow}>
         <span className={styles.filterLabel}>{t('goals.calendar.showDays')}:</span>
         <div className={styles.filterButtons}>
-          {[7, 30, 60, 90].map(d => (
+          {[7, 30, 60, 90].map((d) => (
             <button
               key={d}
               className={`${styles.filterBtn} ${viewDays === d ? styles.filterBtnActive : ''}`}
@@ -54,7 +62,6 @@ const CalendarView = ({ goalId }) => {
         </div>
       </div>
 
-      {/* Resumen superior */}
       <div className={styles.summaryRow}>
         <div className={styles.summaryItem}>
           <span className={styles.summaryLabel}>{t('goals.calendar.totalDays')}</span>
@@ -77,12 +84,11 @@ const CalendarView = ({ goalId }) => {
         <div className={styles.summaryItem}>
           <span className={styles.summaryLabel}>{t('goals.calendar.winrate')}</span>
           <span className={styles.summaryValue}>
-            {calendar.real_winrate !== null ? `${(calendar.real_winrate * 100).toFixed(1)}%` : '—'}
+            {calendar.real_winrate !== null ? `${(calendar.real_winrate * 100).toFixed(1)}%` : '-'}
           </span>
         </div>
       </div>
 
-      {/* Lista de días */}
       <div className={styles.daysList}>
         {calendar.daily_plans.length === 0 ? (
           <div className={styles.emptyState}>{t('goals.calendar.noData')}</div>
@@ -95,23 +101,39 @@ const CalendarView = ({ goalId }) => {
             >
               <div className={styles.dayHeader}>
                 <div className={styles.dayLeft}>
-                  <div
-                    className={styles.statusDot}
-                    style={{ background: statusColor[plan.status] }}
-                  />
-                  <span className={styles.dayDate}>{new Date(plan.date).toLocaleDateString()}</span>
+                  <div className={styles.statusDot} style={{ background: statusColor[plan.status] }} />
+                  <span className={styles.dayDate}>{formatDate(plan.date)}</span>
                 </div>
                 <div className={styles.dayRight}>
                   <span className={`${styles.dayPnl} ${plan.realized_pnl >= 0 ? styles.green : styles.red}`}>
-                    {plan.realized_pnl >= 0 ? '+' : ''}{plan.realized_pnl.toFixed(2)}
+                    {plan.realized_pnl >= 0 ? '+' : ''}${plan.realized_pnl.toFixed(2)}
                   </span>
                   <span className={`${styles.dayStatus} ${styles[`status${plan.status}`]}`}>
                     {t(`goals.calendar.status.${plan.status.toLowerCase()}`)}
                   </span>
+                  <span className={styles.expandHint}>{selectedDay === plan.id ? '-' : '+'}</span>
                 </div>
               </div>
 
-              {/* Detalle expandido */}
+              <div className={styles.dayMetrics}>
+                <div className={styles.metricChip}>
+                  <span className={styles.metricLabel}>{t('goals.calendar.stake')}</span>
+                  <span className={styles.metricValue}>${plan.planned_stake.toFixed(2)}</span>
+                </div>
+                <div className={styles.metricChip}>
+                  <span className={styles.metricLabel}>{t('goals.calendar.plannedOps')}</span>
+                  <span className={styles.metricValue}>{plan.planned_ops_total}</span>
+                </div>
+                <div className={styles.metricChip}>
+                  <span className={styles.metricLabel}>{t('goals.calendar.actualOps')}</span>
+                  <span className={styles.metricValue}>{plan.actual_ops}</span>
+                </div>
+                <div className={styles.metricChip}>
+                  <span className={styles.metricLabel}>{t('goals.calendar.sessions')}</span>
+                  <span className={styles.metricValue}>{plan.actual_sessions}/{plan.planned_sessions}</span>
+                </div>
+              </div>
+
               {selectedDay === plan.id && (
                 <div className={styles.dayDetail}>
                   <div className={styles.detailGrid}>
@@ -149,10 +171,10 @@ const CalendarView = ({ goalId }) => {
                     </div>
                   </div>
                   {plan.blocked_reason && (
-                    <div className={styles.blockedReason}>🚫 {plan.blocked_reason}</div>
+                    <div className={styles.blockedReason}>Bloqueado: {plan.blocked_reason}</div>
                   )}
                   {plan.notes && (
-                    <div className={styles.notes}>📝 {plan.notes}</div>
+                    <div className={styles.notes}>Notas: {plan.notes}</div>
                   )}
                 </div>
               )}
