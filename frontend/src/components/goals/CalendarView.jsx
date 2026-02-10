@@ -86,12 +86,11 @@ const CalendarView = ({ goalId }) => {
   const monthCells = useMemo(() => buildMonthGrid(currentMonth), [currentMonth]);
 
   const weekDayNames = useMemo(() => {
-    const baseMonday = new Date(2024, 0, 1); // Monday
-    return Array.from({ length: 7 }, (_, idx) => {
-      const d = new Date(baseMonday);
-      d.setDate(baseMonday.getDate() + idx);
-      return d.toLocaleDateString(i18n.language, { weekday: 'short' });
-    });
+    const lang = (i18n.language || '').toLowerCase();
+    if (lang.startsWith('es')) {
+      return ['LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB', 'DOM'];
+    }
+    return ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
   }, [i18n.language]);
 
   const monthTitle = useMemo(
