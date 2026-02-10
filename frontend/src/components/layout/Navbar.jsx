@@ -31,7 +31,7 @@ export default function Navbar() {
     <nav className={styles.navbar}>
       <div className={styles.container}>
         <Link to="/" className={styles.brand}>
-          Binary Options
+          Gestión de Capital
         </Link>
         <div className={styles.menu}>
           {navLinks.map(link => (
